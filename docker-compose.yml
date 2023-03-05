@@ -1,34 +1,46 @@
-version: "3.9"
+version: '3.9'
 services:
   api:
+    environment:
+      - NODE_ENV:${NODE_ENV}
     build:
       dockerfile: Dockerfile
       context: .
-      # Only will build development stage from our dockerfile
-      target: development
+      target: '${NODE_ENV}'
+    entrypoint: ['npm', 'run', 'start']
     volumes:
       - .:/usr/src/app
+      - /usr/src/app/node_modules
     env_file:
-    - .env
+      - .env
     # Run a command against the development stage of the image
     command: npm run start:dev
     ports:
       - 3000:3000
-  db:
-    image: postgres:14.1-alpine
+    depends_on:
+      - postgres
+    links:
+      - postgres:postgres
+    networks:
+      - mynet
+  postgres:
+    image: postgres
     restart: always
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    container_name: postgres
+    env_file:
+      - .env
     ports:
-      - '5433:5432'
-    volumes: 
-      - db:/var/lib/postgresql/data
+      - '5432:5432'
+    volumes:
+      - docker-nest-postgres:/var/lib/postgresql/data
+    networks:
+      - mynet
   redis:
-    image: "redis:alpine"
+    image: 'redis:alpine'
 volumes:
   redis:
     driver: local
-  db:
-    driver: local
+  docker-nest-postgres:
+networks:
+  mynet:
+    name: shared-db-network
