@@ -5,14 +5,11 @@ export class User {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 
-	@Column()
-	name: string;
-
-	@Column()
+	@Column({ unique: true })
 	email: string;
 
-	@Column("text")
-	password: string
+	@Column('text')
+	password: string;
 
 	@Column('timestamp with time zone', {
 		nullable: false,
