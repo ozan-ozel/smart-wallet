@@ -13,11 +13,13 @@ import {
 	Post,
 	UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 
+@ApiTags('users')
 @Controller('users')
 export class UserController {
 	constructor(
