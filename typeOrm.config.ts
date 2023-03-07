@@ -3,7 +3,8 @@ import { DataSource } from 'typeorm';
 
 import { ConfigService } from '@nestjs/config';
 
-import { CreateUser1678098804410 } from './migrations/1678098804410-CreateUser';
+import { CreateUser1678122357690 } from './migrations/1678122357690-CreateUser';
+import { UserEmailUnique1678184311506 } from './migrations/1678184311506-UserEmailUnique';
 import { User } from './src/user/user.entity';
 
 config();
@@ -18,5 +19,5 @@ export default new DataSource({
 	password: configService.get('POSTGRES_PASSWORD'),
 	database: configService.get('POSTGRES_DB'),
 	entities: [User],
-	migrations: [CreateUser1678098804410],
+	migrations: [CreateUser1678122357690, UserEmailUnique1678184311506],
 });
