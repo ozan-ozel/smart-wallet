@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Wallet } from '../wallet/wallet.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class User {
@@ -10,6 +11,9 @@ export class User {
 
 	@Column('text')
 	password: string;
+
+	@OneToMany(() => Wallet, (wallet) => wallet.user)
+	wallets: Wallet[];
 
 	@Column('timestamp with time zone', {
 		nullable: false,

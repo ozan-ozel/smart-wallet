@@ -11,7 +11,7 @@ import { User } from './user.entity';
 export class UserService {
 	constructor(
 		@InjectRepository(User)
-		private usersRepository: Repository<User>
+		private userRepository: Repository<User>
 	) {}
 
 	async create(createUserDto: CreateUserDto): Promise<User> {
@@ -21,15 +21,15 @@ export class UserService {
 		const salt = await bcrypt.genSalt(Number(process.env.SALT_ROUNDS ?? 10));
 		user.password = await bcrypt.hash(createUserDto.password, salt);
 
-		return this.usersRepository.save(user);
+		return this.userRepository.save(user);
 	}
 
 	findAll(): Promise<User[]> {
-		return this.usersRepository.find();
+		return this.userRepository.find();
 	}
 
 	findByEmail(email: string): Promise<User> {
-		return this.usersRepository.findOne({
+		return this.userRepository.findOne({
 			where: {
 				email,
 			},
@@ -37,10 +37,13 @@ export class UserService {
 	}
 
 	findOne(id: string): Promise<User> {
-		return this.usersRepository.findOneBy({ id });
+		return this.userRepository.findOneBy({ id });
 	}
 
 	async remove(id: string): Promise<void> {
-		await this.usersRepository.delete(id);
+		await this.userRepository.save({
+			id,
+			isActive: false,
+		});
 	}
 }
