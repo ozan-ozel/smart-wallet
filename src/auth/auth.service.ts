@@ -8,10 +8,6 @@ export class AuthService {
 	constructor(private readonly jwtService: JwtService) {}
 
 	async validateUser(user: any, password: string): Promise<any> {
-		console.log(user);
-
-		console.log(password);
-
 		return await bcrypt.compare(password, user.password);
 	}
 

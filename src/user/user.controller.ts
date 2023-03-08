@@ -11,9 +11,10 @@ import {
 	Param,
 	ParseIntPipe,
 	Post,
+	Request,
 	UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './user.entity';
@@ -53,17 +54,22 @@ export class UserController {
 		return this.authService.getToken(user);
 	}
 
+	@ApiBearerAuth()
 	@UseGuards(JwtAuthGuard)
 	@Get()
 	findAll(): Promise<User[]> {
 		return this.userService.findAll();
 	}
 
+	@ApiBearerAuth()
+	@UseGuards(JwtAuthGuard)
 	@Get(':id')
 	findOne(@Param('id', ParseIntPipe) id: string): Promise<User> {
 		return this.userService.findOne(id);
 	}
 
+	@ApiBearerAuth()
+	@UseGuards(JwtAuthGuard)
 	@Delete(':id')
 	remove(@Param('id') id: string): Promise<void> {
 		return this.userService.remove(id);
