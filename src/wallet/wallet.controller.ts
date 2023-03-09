@@ -62,8 +62,8 @@ export class WalletController {
 	@ApiBearerAuth()
 	@UseGuards(JwtAuthGuard)
 	@Get()
-	findAll(): Promise<Wallet[]> {
-		return this.walletService.findAll();
+	findAll(@Request() req): Promise<Wallet[]> {
+		return this.walletService.findByUser(req.user.id);
 	}
 
 	@ApiBearerAuth()
