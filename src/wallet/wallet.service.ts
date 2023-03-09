@@ -3,8 +3,10 @@ import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { Wallet } from './wallet.entity';
+import { Currency } from '../currency/currency.entity';
+import { User } from '../user/user.entity';
 import { CreateWalletDto } from './dto/create-wallet.dto';
+import { Wallet } from './wallet.entity';
 
 @Injectable()
 export class WalletService {
@@ -13,15 +15,19 @@ export class WalletService {
 		private walletRepository: Repository<Wallet>
 	) {}
 
-	async create(createWalletDto: CreateWalletDto): Promise<Wallet> {
+	async create(
+		createWalletDto: CreateWalletDto,
+		user: User,
+		currency: Currency
+	): Promise<Wallet> {
+		let wallet = new Wallet();
 
-    const wallet = new Wallet();
-    wallet.name = createWalletDto.name;
-    wallet.balance = createWalletDto.balance;
-    wallet.user = createWalletDto.user;
-    wallet.currency = createWalletDto.currency;
+		wallet.name = createWalletDto.name;
+		wallet.balance = createWalletDto.balance;
+		wallet.user = user;
+		wallet.currency = currency;
 
-		return this.walletRepository.save(createWalletDto);
+		return this.walletRepository.save(wallet);
 	}
 
 	findAll(): Promise<Wallet[]> {
