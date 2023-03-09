@@ -17,7 +17,7 @@ export class Currency {
 	@Column({ unique: true })
 	name: string;
 
-	@Column('text')
+	@Column({type: 'text', nullable: true})
 	description: string;
 
 	@OneToMany(() => Exchange, (exchange) => exchange.from)

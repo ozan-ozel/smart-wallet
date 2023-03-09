@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { CreateUser1678122357690 } from './migrations/1678122357690-CreateUser';
 import { UserEmailUnique1678184311506 } from './migrations/1678184311506-UserEmailUnique';
 import { CreateWalletCurrencyExchange1678268513926 } from './migrations/1678268513926-CreateWalletCurrencyExchange';
+import { CurrencyDescNullable1678362942884 } from './migrations/1678362942884-CurrencyDescNullable';
 import { Currency } from './src/currency/currency.entity';
 import { Exchange } from './src/exchange/exchange.entity';
 import { User } from './src/user/user.entity';
@@ -27,5 +28,6 @@ export default new DataSource({
 		CreateUser1678122357690,
 		UserEmailUnique1678184311506,
 		CreateWalletCurrencyExchange1678268513926,
+		CurrencyDescNullable1678362942884,
 	],
 });
