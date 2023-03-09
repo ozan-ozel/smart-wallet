@@ -31,7 +31,6 @@ export class WalletController {
 	@UseGuards(JwtAuthGuard)
 	@Post()
 	async create(@Request() req): Promise<void> {
-    console.log(req.user);
 	}
 
 	@UseGuards(JwtAuthGuard)

@@ -1,21 +1,22 @@
-import { AuthService } from 'src/auth/auth.service';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-
 import {
-	BadRequestException,
 	Body,
 	Controller,
 	Delete,
 	Get,
 	HttpCode,
+	Inject,
 	Param,
 	ParseIntPipe,
 	Post,
 	Request,
 	UseGuards,
+	forwardRef,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 
+import { AuthService } from '../auth/auth.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { LocalAuthGuard } from '../auth/guards/local-auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './user.entity';
 import { UserService } from './user.service';
@@ -25,7 +26,8 @@ import { UserService } from './user.service';
 export class UserController {
 	constructor(
 		private readonly userService: UserService,
-		private readonly authService: AuthService
+		@Inject(forwardRef(() => AuthService))
+		private authService: AuthService
 	) {}
 
 	@Post()
@@ -33,25 +35,21 @@ export class UserController {
 		await this.userService.create(createUserDto);
 	}
 
+	@ApiBody({
+		type: CreateUserDto,
+		description: 'User login method',
+		examples: {
+			a: {
+				summary: 'Example user',
+				value: { email: 'example@example.com', password: '' } as CreateUserDto,
+			},
+		},
+	})
+	@UseGuards(LocalAuthGuard)
 	@Post('login')
 	@HttpCode(200)
-	async login(@Body() createUserDto: CreateUserDto): Promise<any> {
-		const user = await this.userService.findByEmail(createUserDto.email);
-
-		if (!user) {
-			throw new BadRequestException('Credentials is wrong.');
-		}
-
-		const validationResult = await this.authService.validateUser(
-			user,
-			createUserDto.password
-		);
-
-		if (!validationResult) {
-			throw new BadRequestException('Credentials is wrong.');
-		}
-
-		return this.authService.getToken(user);
+	async login(@Request() req): Promise<any> {
+		return this.authService.getToken(req.user);
 	}
 
 	@ApiBearerAuth()
