@@ -16,3 +16,9 @@ docker-compose down             # docker-compose down (Shutdown postgres)
 ```sh
 SWAGGER DOCUMENTATION: http://localhost:3000/api
 ```
+
+### Pulling from Docker hub
+
+```sh
+docker pull ozandozel/smart_wallet_ruut_ozandozel:latest
+```
