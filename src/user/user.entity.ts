@@ -1,5 +1,7 @@
-import { Wallet } from '../wallet/wallet.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+
+import { DbAwareColumn } from '../../test/transform.columns';
+import { Wallet } from '../wallet/wallet.entity';
 
 @Entity()
 export class User {
@@ -15,7 +17,8 @@ export class User {
 	@OneToMany(() => Wallet, (wallet) => wallet.user)
 	wallets: Wallet[];
 
-	@Column('timestamp with time zone', {
+	@DbAwareColumn({
+		type: 'timestamp with time zone',
 		nullable: false,
 		default: () => 'CURRENT_TIMESTAMP',
 	})

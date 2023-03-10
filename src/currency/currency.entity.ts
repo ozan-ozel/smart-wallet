@@ -1,11 +1,11 @@
 import {
 	Column,
 	Entity,
-	ManyToOne,
 	OneToMany,
 	PrimaryGeneratedColumn,
 } from 'typeorm';
 
+import { DbAwareColumn } from '../../test/transform.columns';
 import { Exchange } from '../exchange/exchange.entity';
 import { Wallet } from '../wallet/wallet.entity';
 
@@ -17,7 +17,7 @@ export class Currency {
 	@Column({ unique: true })
 	name: string;
 
-	@Column({type: 'text', nullable: true})
+	@Column({ type: 'text', nullable: true })
 	description: string;
 
 	@OneToMany(() => Exchange, (exchange) => exchange.from)
@@ -29,7 +29,8 @@ export class Currency {
 	@OneToMany(() => Wallet, (wallet) => wallet.currency)
 	wallets: Wallet[];
 
-	@Column('timestamp with time zone', {
+	@DbAwareColumn({
+		type: 'timestamp with time zone',
 		nullable: false,
 		default: () => 'CURRENT_TIMESTAMP',
 	})
