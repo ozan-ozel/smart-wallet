@@ -38,6 +38,19 @@ export class WalletService {
 		return this.walletRepository.findOneBy({ id });
 	}
 
+	findWithRelations(id: number): Promise<Wallet[]> {
+		return this.walletRepository.find({
+			where: { id },
+			relations: ['user', 'currency'],
+		});
+	}
+
+	updateBalance(id: number, balance: number) {
+		return this.walletRepository.update(id, {
+			balance,
+		});
+	}
+
 	async remove(id: number): Promise<void> {
 		await this.walletRepository.save({ id, isActive: false });
 	}

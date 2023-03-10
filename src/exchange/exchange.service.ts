@@ -3,18 +3,22 @@ import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { Exchange } from './exchange.entity';
-import { CreateExchangeDto } from './dto/create-exchange.dto';
 import { Currency } from '../currency/currency.entity';
+import { CreateExchangeDto } from './dto/create-exchange.dto';
+import { Exchange } from './exchange.entity';
 
 @Injectable()
 export class ExchangeService {
 	constructor(
 		@InjectRepository(Exchange)
-		private exchangeRepository: Repository<Exchange>,
+		private exchangeRepository: Repository<Exchange>
 	) {}
 
-	async create(createExchangeDto: CreateExchangeDto, from: Currency, to: Currency): Promise<Exchange> {
+	async create(
+		createExchangeDto: CreateExchangeDto,
+		from: Currency,
+		to: Currency
+	): Promise<Exchange> {
 		const exchange = new Exchange();
 
 		exchange.rate = createExchangeDto.rate;
@@ -31,6 +35,17 @@ export class ExchangeService {
 
 	findOne(id: number): Promise<Exchange> {
 		return this.exchangeRepository.findOneBy({ id });
+	}
+
+	findOneByCurrencyPair(fromId: number, toId: number): Promise<Exchange> {
+		return this.exchangeRepository.findOneBy({
+			from: {
+				id: fromId,
+			},
+			to: {
+				id: toId,
+			},
+		});
 	}
 
 	async remove(id: number): Promise<void> {

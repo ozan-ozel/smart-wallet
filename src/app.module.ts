@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CurrencyModule } from './currency/currency.module';
 import { ExchangeModule } from './exchange/exchange.module';
+import { OfferModule } from './offer/offer.module';
 import { UsersModule } from './user/user.module';
 import { WalletModule } from './wallet/wallet.module';
 
@@ -26,6 +27,7 @@ import { WalletModule } from './wallet/wallet.module';
 		CurrencyModule,
 		WalletModule,
 		ExchangeModule,
+		OfferModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],
