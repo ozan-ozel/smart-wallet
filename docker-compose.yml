@@ -3,7 +3,7 @@ services:
   postgres:
     image: postgres
     restart: always
-    container_name: postgres
+    container_name: postgres-smart-wallet
     env_file:
       - .env
     ports:
