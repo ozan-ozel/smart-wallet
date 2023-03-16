@@ -121,6 +121,18 @@ describe('OfferController', () => {
 		expect(offer.rate).toBe(19.2 + exchangeRate); // calculated using rate and markup of seed exchange
 	});
 
+	it('should fail to create if source and destination wallets are the same', async () => {
+		try {
+			await controller.create({ sourceId: 3, destinationId: 3, amount: 300 });
+
+			expect(true).toBe(false);
+		} catch (e) {
+			expect(e.message).toBe(
+				'Source and destination wallets should be different'
+			);
+		}
+	});
+
 	it('should fail to accept offer if id is not valid', async () => {
 		try {
 			await controller.accept(4);

@@ -54,6 +54,13 @@ export class OfferController {
 			throw new HttpException('Invalid amount', HttpStatus.BAD_REQUEST);
 		}
 
+		if (createOfferDto.sourceId === createOfferDto.destinationId) {
+			throw new HttpException(
+				'Source and destination wallets should be different',
+				HttpStatus.BAD_REQUEST
+			);
+		}
+
 		const responseSource = await this.walletService.findWithRelations(
 			createOfferDto.sourceId
 		);
