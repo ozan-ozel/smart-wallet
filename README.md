@@ -22,3 +22,15 @@ SWAGGER DOCUMENTATION: http://localhost:3000/api
 ```sh
 docker pull ozandozel/smart_wallet_ruut_ozandozel:latest
 ```
+
+### Entity Descriptions
+
+User has email and password fields. It also has wallets for different currencies.
+
+Currency just consists of the name and description for each different currency.
+
+Exchange is a currency pair. It shows what is the current rate between `from` and `to` fields. Markup is the markup rate that we will use when the offer is created.
+
+Each wallet belongs to a user. It also connected to the currency model. It holds the balance information as well.
+
+Offer can be created by a user to transfer a certain amount from one wallet to the other. Amount corresponds that will be reduced from source wallet. Rate is the calculated rate using that exchange's rate and markup values.
